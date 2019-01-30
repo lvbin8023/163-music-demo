@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
+var qiniu = require('qiniu');
 var port = process.argv[2];
 
 if (!port) {
@@ -29,7 +30,7 @@ var server = http.createServer(function (request, response) {
     let {
       accessKey,
       secretKey
-    } = Json.parse(config);
+    } = JSON.parse(config);
     var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
     var options = {
       scope: '163-music-demo',
@@ -38,7 +39,7 @@ var server = http.createServer(function (request, response) {
     var uploadToken = putPolicy.uploadToken(mac);
     response.write(`
     {
-      "uptoken": "${uploadToken}";
+      "uptoken": "${uploadToken}"
     }`);
     response.end();
   } else {
