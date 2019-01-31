@@ -23,7 +23,7 @@ a {
 }
 
 body {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -70,13 +70,18 @@ body {
   background-color: #d4d4d4;
 }
 
-#yyy {
+.draggable {
   width: 200px;
   padding: 10px;
   border: 2px dashed #ddd;
-  border-radius: 10px;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+}
+
+.clickable {
+  cursor: pointer;
 }
