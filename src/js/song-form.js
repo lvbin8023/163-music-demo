@@ -1,14 +1,14 @@
 {
   let view = {
-    el:'.page>main',
-    template:`
+    el: '.page>main',
+    template: `
     <h1>新建歌曲</h1>
     <form class="form" action="post">
       <div class="row">
         <label>
           歌名
         </label>
-        <input type="text">
+        <input type="text" value="__key__">
       </div>
       <div class="row">
         <label>
@@ -20,30 +20,37 @@
         <label>
           外链
         </label>
-        <input type="text">
+        <input type="text" value="__link__">
       </div>
       <div class="row">
         <button type="submit">保存</button>
       </div>
     </form>
     `,
-    render(data) {
-      $(this.el).html(this.template);
+    render(data = {}) {
+      let placeHolders = ['key', 'link'];
+      let template = this.template;
+      placeHolders.map((string) => {
+        template = template.replace(`__${string}__`, data[string] || '');
+      });
+      $(this.el).html(template);
     }
   };
   let model = {
 
   };
   let controller = {
-    init(view,model){
+    init(view, model) {
       this.view = view;
       this.model = model;
-      this.view.render(this.model.data);
+      this.view.render();
       window.eventHub.on('upload', (data) => {
-        console.log('song form 模块得到了 data');
-        console.log(data);
+        this.reset(data);
       });
+    },
+    reset(data) {
+      this.view.render(data);
     }
   };
-  controller.init(view,model);
+  controller.init(view, model);
 }
