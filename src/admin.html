@@ -27,6 +27,8 @@
     </main>
   </div>
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
+  <script src="../src/js/av.js"></script>
   <script src="../node_modules/plupload/js/plupload.full.min.js"></script>
   <script src="../node_modules/qiniu-js/dist/qiniu.min.js"></script>
   <script src="../src/js/event-hub.js"></script>
@@ -34,31 +36,6 @@
   <script src="../src/js/song-form.js"></script>
   <script src="../src/js/song-list.js"></script>
   <script src="../src/js/upload-song.js"></script>
-  <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
-  <script>
-    var APP_ID = 'XxsO0DrjvDDbXbKuiDKvmM7b-9Nh9j0Va';
-    var APP_KEY = 'PraqWEgjzPL1lxR5lEvBNMxw';
-
-    AV.init({
-      appId: APP_ID,
-      appKey: APP_KEY
-    });
-
-    // //创建数据库
-    // var TestObject = AV.Object.extend('Playlist');
-    // //创建一条记录
-    // var testObject = new TestObject();
-    // //保存记录
-    // testObject.save({
-    //   name: 'test',
-    //   cover:'test',
-    //   creatorId:'test',
-    //   description:'test',
-    //   songs:['1','2']
-    // }).then(function (object) {
-    //   alert('LeanCloud Rocks!');
-    // })
-  </script>
 </body>
 
 </html>

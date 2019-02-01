@@ -92,8 +92,8 @@
             var sourceLink = 'http://' + domain + '/' + encodeURIComponent(response.key);
             // uploadStatus.textContent = sourceLink + ' ' + response.key;
             window.eventHub.emit('upload', {
-              link: sourceLink,
-              key: response.key
+              url: sourceLink,
+              name: response.key
             });
           },
           'Error': function (up, err, errTip) {
