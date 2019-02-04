@@ -56,7 +56,7 @@
           attributes,
           id
         } = newSong;
-        this.data = {...id,...attributes}
+        this.data = {...id, ...attributes}
       }, (error) => {
         console.error(error);
       });
@@ -82,6 +82,7 @@
         });
         this.model.creat(data).then(()=>{
           this.view.render({});
+          window.eventHub.emit('create',this.model.data);
         });
       });
     }
