@@ -14,7 +14,7 @@
       let {
         songs
       } = data;
-      let liList = songs.map((song) => $('<li></li>').text(song.name));
+      let liList = songs.map((song) => $('<li></li>').text(song.name).attr('song-id',song.id));
       $(this.el).find('ul').empty();
       liList.map((domLi) => $(this.el).find('ul').append(domLi));
     },
@@ -56,6 +56,8 @@
     bindEvents() {
       $(this.view.el).on('click','li',(event)=>{
         this.view.activeItem(event.currentTarget);
+        let songId = event.currentTarget.getAttribute('song-id');
+        window.eventHub.emit('selected',{id:songId});
       })
     },
     bindEventHub() {
