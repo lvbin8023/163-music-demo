@@ -72,20 +72,23 @@
       this.model = model;
       this.view.render();
       this.bindEvents();
+      this.bindEventHub();
+    },
+    bindEventHub() {
       window.eventHub.on('upload', (data) => {
         this.view.render(data);
       });
-      window.eventHub.on('selected',(data)=>{
+      window.eventHub.on('selected', (data) => {
         this.model.data = data;
         this.view.render(this.model.data);
       });
-      window.eventHub.on('new',()=>{
+      window.eventHub.on('new', () => {
         this.model.data = {
           name: '',
           singer: '',
           url: '',
           id: ''
-        }
+        };
         this.view.render(this.model.data);
       });
     },
