@@ -39,15 +39,25 @@
     init(view, model) {
       this.view = view;
       this.model = model;
+      this.getAllSongs();
+      this.bindEventHub();
+      this.bindEvents();
       this.view.render(this.model.data);
+    },
+    getAllSongs() {
+      return this.model.find().then(() => {
+        this.view.render(this.model.data);
+      });
+    },
+    bindEvents() {
+
+    },
+    bindEventHub() {
       window.eventHub.on('upload', () => {
         this.view.clearActive();
       });
       window.eventHub.on('create', (songData) => {
         this.model.data.songs.push(songData);
-        this.view.render(this.model.data);
-      });
-      this.model.find().then(() => {
         this.view.render(this.model.data);
       });
     }
