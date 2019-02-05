@@ -27,7 +27,7 @@
     </form>
     `,
     render(data = {}) {
-      let placeHolders = ['name', 'singer','url','id'];
+      let placeHolders = ['name', 'singer', 'url', 'id'];
       let template = this.template;
       placeHolders.map((string) => {
         template = template.replace(`__${string}__`, data[string] || '');
@@ -60,7 +60,10 @@
           attributes,
           id
         } = newSong;
-        this.data = {...id, ...attributes}
+        this.data = {
+          ...id,
+          ...attributes
+        }
       }, (error) => {
         console.error(error);
       });
@@ -80,7 +83,16 @@
         this.view.render(this.model.data);
       });
       window.eventHub.on('new', (data) => {
-        this.model.data = data;
+        if (this.model.data.id) {
+          this.model.data = {
+            name: '',
+            singer: '',
+            url: '',
+            id: ''
+          }
+        } else {
+          Object.assign(this.model.data,data);
+        }
         this.view.render(this.model.data);
       });
     },
@@ -92,9 +104,9 @@
         needs.map((string) => {
           data[string] = $(this.view.el).find(`input[name='${string}']`).val();
         });
-        this.model.creat(data).then(()=>{
+        this.model.creat(data).then(() => {
           this.view.render({});
-          window.eventHub.emit('create',this.model.data);
+          window.eventHub.emit('create', this.model.data);
         });
       });
     }

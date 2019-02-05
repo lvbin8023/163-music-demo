@@ -21,7 +21,7 @@
       window.eventHub.on('selected', (data) => {
         this.deactive();
       });
-      $(this.view.el).on('click',()=>{
+      $(this.view.el).on('click', () => {
         window.eventHub.emit('new');
       });
     },

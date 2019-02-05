@@ -14,7 +14,7 @@
       let {
         songs
       } = data;
-      let liList = songs.map((song) => $('<li></li>').text(song.name).attr('song-id',song.id));
+      let liList = songs.map((song) => $('<li></li>').text(song.name).attr('song-id', song.id));
       $(this.el).find('ul').empty();
       liList.map((domLi) => $(this.el).find('ul').append(domLi));
     },
@@ -54,7 +54,7 @@
       });
     },
     bindEvents() {
-      $(this.view.el).on('click','li',(event)=>{
+      $(this.view.el).on('click', 'li', (event) => {
         this.view.activeItem(event.currentTarget);
         let songId = event.currentTarget.getAttribute('song-id');
         let data;
@@ -62,7 +62,7 @@
         for (let i = 0; i < songs.length; i++) {
           if (songs[i].id === songId) {
             data = songs[i];
-            break; 
+            break;
           }
         }
         window.eventHub.emit('selected', JSON.parse(JSON.stringify(data)));
@@ -73,7 +73,7 @@
         this.model.data.songs.push(songData);
         this.view.render(this.model.data);
       });
-      window.eventHub.on('new',()=>{
+      window.eventHub.on('new', () => {
         this.view.clearActive();
       })
     }
