@@ -2,7 +2,6 @@
   let view = {
     el: '.page>main',
     template: `
-    <h1>新建歌曲</h1>
     <form class="form" action="post">
       <div class="row">
         <label>
@@ -34,6 +33,11 @@
         template = template.replace(`__${string}__`, data[string] || '');
       });
       $(this.el).html(template);
+      if (data.id) {
+        $(this.el).prepend('<h1>编辑歌曲</h1>');
+      } else {
+        $(this.el).prepend('<h1>新建歌曲</h1>')
+      }
     }
   };
   let model = {
@@ -74,7 +78,16 @@
       window.eventHub.on('selected',(data)=>{
         this.model.data = data;
         this.view.render(this.model.data);
-      })
+      });
+      window.eventHub.on('new',()=>{
+        this.model.data = {
+          name: '',
+          singer: '',
+          url: '',
+          id: ''
+        }
+        this.view.render(this.model.data);
+      });
     },
     bindEvents() {
       $(this.view.el).on('submit', 'form', (e) => {
