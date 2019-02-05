@@ -5,6 +5,10 @@
     <ul class="songList">
     </ul>
     `,
+    activeItem(li) {
+      let $li = $(li);
+      $li.addClass('active').siblings('.active').removeClass('active');
+    },
     render(data) {
       $(this.el).html(this.template);
       let {
@@ -50,7 +54,9 @@
       });
     },
     bindEvents() {
-
+      $(this.view.el).on('click','li',(event)=>{
+        this.view.activeItem(event.currentTarget);
+      })
     },
     bindEventHub() {
       window.eventHub.on('upload', () => {
