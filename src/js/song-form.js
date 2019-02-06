@@ -47,7 +47,7 @@
       url: '',
       id: ''
     },
-    creat(data) {
+    createItem(data) {
       var Song = AV.Object.extend('Song');
       var song = new Song();
       song.set({
@@ -66,6 +66,18 @@
         }
       }, (error) => {
         console.error(error);
+      });
+    },
+    updateItem(data) {
+      var song = AV.Object.createWithoutData('Song', this.data.id);
+      song.set({
+        'name': data.name,
+        'singer': data.singer,
+        'url': data.url
+      });
+      return song.save().then((response)=>{
+        Object.assign(this.data,data);
+        return response;
       });
     }
   };
@@ -91,23 +103,40 @@
             id: ''
           }
         } else {
-          Object.assign(this.model.data,data);
+          Object.assign(this.model.data, data);
         }
         this.view.render(this.model.data);
+      });
+    },
+    create() {
+      let needs = ['name', 'singer', 'url'];
+      let data = {};
+      needs.map((string) => {
+        data[string] = $(this.view.el).find(`input[name='${string}']`).val();
+      });
+      this.model.createItem(data).then(() => {
+        this.view.render({});
+        window.eventHub.emit('create', JSON.parse(JSON.stringify(data)));
+      });
+    },
+    update() {
+      let needs = ['name', 'singer', 'url'];
+      let data = {};
+      needs.map((string) => {
+        data[string] = $(this.view.el).find(`input[name='${string}']`).val();
+      });
+      this.model.updateItem(data).then(() => {
+        window.eventHub.emit('update', Object.assign(this.model.data,data));
       });
     },
     bindEvents() {
       $(this.view.el).on('submit', 'form', (e) => {
         e.preventDefault();
-        let needs = ['name', 'singer', 'url'];
-        let data = {};
-        needs.map((string) => {
-          data[string] = $(this.view.el).find(`input[name='${string}']`).val();
-        });
-        this.model.creat(data).then(() => {
-          this.view.render({});
-          window.eventHub.emit('create', this.model.data);
-        });
+        if (this.model.data.id) {
+          this.update();
+        } else {
+          this.create();
+        }
       });
     }
   };

@@ -62,7 +62,6 @@
         for (let i = 0; i < songs.length; i++) {
           if (songs[i].id === songId) {
             data = songs[i];
-            break;
           }
         }
         window.eventHub.emit('selected', JSON.parse(JSON.stringify(data)));
@@ -75,6 +74,15 @@
       });
       window.eventHub.on('new', () => {
         this.view.clearActive();
+      });
+      window.eventHub.on('update',(songData)=>{
+        let songs = this.model.data.songs;
+        for (let i = 0; i < songs.length; i++) {
+          if (songs[i].id === songData.id) {
+            Object.assign(songs[i],songData)
+          }
+        }
+        this.view.render(this.model.data);
       })
     }
   };

@@ -15,6 +15,9 @@
       this.model = model;
       this.view.render(this.model.data);
       this.active();
+      this.bindEventHub();
+    },
+    bindEventHub() {
       window.eventHub.on('new', (data) => {
         this.active();
       });
