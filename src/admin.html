@@ -7,47 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./css/default.css">
   <title>管理页面</title>
-  <style>
-    @keyframes loading {
-      0% {
-        transform: scale(1.0);
-      }
-
-      100% {
-        transform: scale(0.1);
-      }
-    }
-
-    .site-loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      background-color: rgba(0, 0, 0, 0.2);
-      visibility: hidden;
-    }
-
-    .site-loading.active {
-      visibility: visible;
-    }
-
-    .site-loading::before {
-      content: '';
-      display: block;
-      width: 50px;
-      height: 50px;
-      background-color: rgb(42, 180, 49);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      animation: loading 0.8s infinite alternate-reverse;
-      animation-timing-function: linear;
-    }
-  </style>
 </head>
 
 <body>
