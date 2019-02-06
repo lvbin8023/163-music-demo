@@ -5,16 +5,19 @@
     <ul class="songList">
     </ul>
     `,
-    activeItem(li) {
-      let $li = $(li);
-      $li.addClass('active').siblings('.active').removeClass('active');
-    },
     render(data) {
       $(this.el).html(this.template);
       let {
-        songs
+        songs,
+        selectSongId
       } = data;
-      let liList = songs.map((song) => $('<li></li>').text(song.name).attr('song-id', song.id));
+      let liList = songs.map((song) => {
+        let $li = $('<li></li>').text(song.name).attr('song-id', song.id);
+        if (song.id === selectSongId) {
+          $li.addClass('active');
+        }
+        return $li;
+      });
       $(this.el).find('ul').empty();
       liList.map((domLi) => $(this.el).find('ul').append(domLi));
     },
@@ -24,7 +27,8 @@
   };
   let model = {
     data: {
-      songs: []
+      songs: [],
+      selectSongId: undefined,
     },
     find() {
       let query = new AV.Query('Song');
@@ -55,8 +59,9 @@
     },
     bindEvents() {
       $(this.view.el).on('click', 'li', (event) => {
-        this.view.activeItem(event.currentTarget);
         let songId = event.currentTarget.getAttribute('song-id');
+        this.model.data.selectSongId = songId;
+        this.view.render(this.model.data);
         let data;
         let songs = this.model.data.songs;
         for (let i = 0; i < songs.length; i++) {
@@ -75,11 +80,11 @@
       window.eventHub.on('new', () => {
         this.view.clearActive();
       });
-      window.eventHub.on('update',(songData)=>{
+      window.eventHub.on('update', (songData) => {
         let songs = this.model.data.songs;
         for (let i = 0; i < songs.length; i++) {
           if (songs[i].id === songData.id) {
-            Object.assign(songs[i],songData)
+            Object.assign(songs[i], songData)
           }
         }
         this.view.render(this.model.data);
