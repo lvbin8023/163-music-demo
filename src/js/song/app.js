@@ -7,10 +7,11 @@
       } = data;
       $(this.el).css('background-image', `url(${song.cover})`);
       $(this.el).find('img.cover').attr('src', song.cover);
-      if ($(this.el).find('audio').attr('src') != song.url) {
+      if ($(this.el).find('audio').attr('src') !== song.url) {
         $(this.el).find('audio').attr('src', song.url);
       }
       if (data.status === 'playing') {
+        this.play();
         $(this.el).find('.disc-container').addClass('playing');
       } else {
         $(this.el).find('.disc-container').removeClass('playing');
@@ -31,7 +32,7 @@
         singer: '',
         url: ''
       },
-      status: 'paused'
+      status: 'playing'
     },
     get(id) {
       let query = new AV.Query('Song');
