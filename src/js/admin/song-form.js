@@ -22,12 +22,18 @@
         <input name="url" type="text" value="__url__">
       </div>
       <div class="row">
+        <label>
+          封面
+        </label>
+        <input name="cover" type="text" value="__cover__">
+      </div>
+      <div class="row">
         <button type="submit">保存</button>
       </div>
     </form>
     `,
     render(data = {}) {
-      let placeHolders = ['name', 'singer', 'url', 'id'];
+      let placeHolders = ['name', 'singer', 'url', 'id', 'cover'];
       let template = this.template;
       placeHolders.map((string) => {
         template = template.replace(`__${string}__`, data[string] || '');
@@ -45,7 +51,8 @@
       name: '',
       singer: '',
       url: '',
-      id: ''
+      id: '',
+      cover: ''
     },
     createItem(data) {
       var Song = AV.Object.extend('Song');
@@ -53,7 +60,8 @@
       song.set({
         'name': data.name,
         'singer': data.singer,
-        'url': data.url
+        'url': data.url,
+        'cover': data.cover
       });
       return song.save().then((newSong) => {
         let {
@@ -64,8 +72,6 @@
           ...id,
           ...attributes
         }
-      }, (error) => {
-        console.error(error);
       });
     },
     updateItem(data) {
@@ -73,10 +79,11 @@
       song.set({
         'name': data.name,
         'singer': data.singer,
-        'url': data.url
+        'url': data.url,
+        'cover': data.cover
       });
-      return song.save().then((response)=>{
-        Object.assign(this.data,data);
+      return song.save().then((response) => {
+        Object.assign(this.data, data);
         return response;
       });
     }
@@ -100,7 +107,7 @@
             name: '',
             singer: '',
             url: '',
-            id: ''
+            id: '',
           }
         } else {
           Object.assign(this.model.data, data);
@@ -109,7 +116,7 @@
       });
     },
     create() {
-      let needs = ['name', 'singer', 'url'];
+      let needs = 'name singer url cover'.split(' ');
       let data = {};
       needs.map((string) => {
         data[string] = $(this.view.el).find(`input[name='${string}']`).val();
@@ -120,13 +127,14 @@
       });
     },
     update() {
-      let needs = ['name', 'singer', 'url'];
+      let needs = 'name singer url cover'.split(' ');
       let data = {};
       needs.map((string) => {
         data[string] = $(this.view.el).find(`input[name='${string}']`).val();
       });
       this.model.updateItem(data).then(() => {
-        window.eventHub.emit('update', Object.assign(this.model.data,data));
+        window.eventHub.emit('update', Object.assign(this.model.data, data));
+        window.location.reload();
       });
     },
     bindEvents() {
