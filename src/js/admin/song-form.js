@@ -28,12 +28,18 @@
         <input name="cover" type="text" value="__cover__">
       </div>
       <div class="row">
+        <label>
+          歌词
+        </label>
+        <textarea name="lyrics" rows="15" cols="50">__lyrics__</textarea>
+      </div>
+      <div class="row">
         <button type="submit">保存</button>
       </div>
     </form>
     `,
     render(data = {}) {
-      let placeHolders = ['name', 'singer', 'url', 'id', 'cover'];
+      let placeHolders = ['name', 'singer', 'url', 'id', 'cover', 'lyrics'];
       let template = this.template;
       placeHolders.map((string) => {
         template = template.replace(`__${string}__`, data[string] || '');
@@ -52,7 +58,8 @@
       singer: '',
       url: '',
       id: '',
-      cover: ''
+      cover: '',
+      lyrics: ''
     },
     createItem(data) {
       var Song = AV.Object.extend('Song');
@@ -61,7 +68,8 @@
         'name': data.name,
         'singer': data.singer,
         'url': data.url,
-        'cover': data.cover
+        'cover': data.cover,
+        'lyrics': data.lyrics
       });
       return song.save().then((newSong) => {
         let {
@@ -80,7 +88,8 @@
         'name': data.name,
         'singer': data.singer,
         'url': data.url,
-        'cover': data.cover
+        'cover': data.cover,
+        'lyrics': data.lyrics
       });
       return song.save().then((response) => {
         Object.assign(this.data, data);
@@ -108,7 +117,8 @@
             singer: '',
             url: '',
             id: '',
-          }
+            lyrics: ''
+          };
         } else {
           Object.assign(this.model.data, data);
         }
@@ -116,10 +126,10 @@
       });
     },
     create() {
-      let needs = 'name singer url cover'.split(' ');
+      let needs = 'name singer url cover lyrics'.split(' ');
       let data = {};
       needs.map((string) => {
-        data[string] = $(this.view.el).find(`input[name='${string}']`).val();
+        data[string] = $(this.view.el).find(`[name='${string}']`).val();
       });
       this.model.createItem(data).then(() => {
         this.view.render({});
@@ -127,10 +137,10 @@
       });
     },
     update() {
-      let needs = 'name singer url cover'.split(' ');
+      let needs = 'name singer url cover lyrics'.split(' ');
       let data = {};
       needs.map((string) => {
-        data[string] = $(this.view.el).find(`input[name='${string}']`).val();
+        data[string] = $(this.view.el).find(`[name='${string}']`).val();
       });
       this.model.updateItem(data).then(() => {
         window.eventHub.emit('update', Object.assign(this.model.data, data));
@@ -140,7 +150,7 @@
     bindEvents() {
       $(this.view.el).on('submit', 'form', (e) => {
         e.preventDefault();
-        if (this.model.data.id) {
+        if (this.model.data.id && this.model.data.name) {
           this.update();
         } else {
           this.create();

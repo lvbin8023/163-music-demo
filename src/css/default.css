@@ -162,6 +162,12 @@ body {
   height: 30px;
 }
 
+.form textarea[name=lyrics] {
+  padding: 3px 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
 .form input[type=button],
 .form input[type=submit],
 .form button {
